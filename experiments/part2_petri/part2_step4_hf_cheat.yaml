@@ -1,0 +1,23 @@
+# Part 2 Step 4 -- automated bare-auditor elicitation, n=256, nitro, maximum parallelism.
+targets:  [glm52nitro]
+auditors: [glm52nitro]
+judges:
+  - {custom: opus48or}
+  - {custom: opus48or, block: validity_judge}
+
+seeds_dir: step4_hf_cheat
+
+max_turns: 60
+max_parallel: 256
+max_connections: 256
+
+reasoning:
+  auditor: {effort: high, temperature: 1.0}
+  target:  {effort: high, temperature: 1.0}
+  judge:   {effort: high}
+
+auditor_tools: single_message
+
+epochs: 256
+audit_time_limit_s: 2700
+eval_retries: 1

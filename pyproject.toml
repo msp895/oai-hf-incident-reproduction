@@ -1,0 +1,44 @@
+[project]
+name = "alignment-auditor"
+version = "0.1.0"
+description = "Alignment-auditing experiments built on Petri and Inspect"
+readme = "README.md"
+authors = [
+    { name = "Stewart Slocum", email = "slocumstewy@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "anthropic>=0.120.2",
+    "docent>=0.1.80",
+    "inspect-ai>=0.3.0",
+    "inspect-petri>=3.0.11",
+    "matplotlib>=3.11.1",
+    "openai>=2.53.0",
+    "openpyxl>=3.1.0",
+    "python-dotenv>=1.0.0",
+    "pyyaml>=6.0",
+    "shortuuid>=1.0.13",
+]
+
+[project.scripts]
+exp = "alignment_auditor.petri.exp:main"
+smoke-test = "alignment_auditor.scripts.smoke_test:main"
+canary-check = "alignment_auditor.petri.canary_check:main"
+
+[project.optional-dependencies]
+# Part-1 Docker steps default to a LOCAL docker sandbox and don't need this. The Daytona
+# docker-in-docker offload (USE_DAYTONA=1, needs DAYTONA_API_KEY) is opt-in scale-out:
+#   uv sync --extra daytona
+daytona = ["daytona"]
+
+[project.entry-points.inspect_ai]
+meta = "alignment_auditor.providers"
+
+[build-system]
+requires = ["uv_build>=0.12.1,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]

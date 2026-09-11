@@ -1,0 +1,81 @@
+# Raw-log manifest for the public Hugging Face dataset behind the blog post.
+#
+#   uv run python -m alignment_auditor.scripts.hf_data push --part part1_docker   # upload your runs
+#   uv run python -m alignment_auditor.scripts.hf_data pull                       # fetch everything into logs/
+#   uv run python -m alignment_auditor.scripts.hf_data pull --part part2_petri    # fetch one part
+#
+# Layout on the Hub is  <part>/<run_dir>/...  and `pull` flattens back to  logs/<run_dir>/...
+# so every analysis script's hard-coded `logs/<run_dir>` path works unchanged.
+#
+# Each coauthor lists the runs that live on their machine under the part they own and runs
+# `push --part <that part>`. `push` only uploads runs that exist locally, so a manifest entry for a
+# run you don't have is harmless. Set `include: false` to keep a run listed (for provenance) but
+# out of the upload.
+
+repo: stewy33/oai-hf-incident-replication   # override with HF_DATA_REPO=...
+
+# Files skipped inside every run dir (driver noise, not data).
+exclude_globs:
+  - "*.pid"
+  - "*.launchpid"
+  - "*.log"
+  - "*.out"
+  - ".eval-set-id"
+  - "_launch/**"
+
+parts:
+  part1_docker:
+    owner: stewy
+    runs:
+      # Step 1 -- gdrive xlsx write (multimodel, GLM 5.2 n64, reasoning-on reruns, Muse native)
+      - 260905_step1_xlsx_n64
+      - 260905_step1_xlsx_glm52_n64
+      - 260910_step1_xlsx_n64_reasoning
+      - 260909_step1_xlsx_muse_meta
+      # Step 2 -- reach out to peers (bank/none arms, multimodel, reasoning reruns, collab arm)
+      - 260905_step2_reachout_protein_bank_n64
+      - 260906_step2_reachout_protein_none_n256
+      - 260909_step2_bank_none_multimodel
+      - 260909_step2_bank_none_reasoning
+      - 260909_step2_muse_meta
+      - 260910_step2_collab_multimodel
+      - 260910_step2_glm52_collab
+      - {run: 260911_step2_generic_peers_glm53, include: false, note: late test, not in post}
+      - {run: 260911_step2_none_generic_multimodel, include: false, note: late test, not in post}
+      # Step 3 -- share exploit (undocumented-endpoint arm) and the egress-share probe
+      - {run: 260905_step3_undoc_n256_driven, include: false, note: only the GLM-5.2-only eval-awareness judge; superseded by multimodel}
+      - 260909_step3_egress_share_n64
+      # Step 4 -- HF cheat chain (260906 redesign onward)
+      - {run: 260906_step4chain_n64_missingbin, include: false, note: only the GLM-5.2-only eval-awareness judge + old step4 report}
+      - 260906_step4chain_n64_softdrive
+      - 260909_step4chain_n64_multimodel
+      - 260909_step4chain_n64_glm53
+      - 260909_step4chain_muse_meta
+      - {run: 260909_step4chain_n64_muse_relentless, include: false, note: unpublished signature plot only}
+      - 260910_step4chain_n64_reasoning
+      - {run: 260910_step4chain_musegrok_reasoning, include: false, note: not referenced by any script}
+      # Superseded designs, kept for provenance but not uploaded. Flip to include if the post
+      # cites them.
+      - {run: 260903_multimodel_n64, include: false, note: pre-redesign step1/step4 tasks}
+      - {run: 260905_step4chain_n64, include: false, note: pre-260906 step4 redesign}
+      - {run: 260905_step2_reachout_protein_n64, include: false, note: superseded by bank/none arms}
+      - {run: 260905_step2_cosim_n256, include: false, note: co-sim arm, not in post}
+      - {run: 260909_step2_cosim_hetero_n256, include: false, note: co-sim arm, not in post}
+      - {run: 260910_step2_cosim_hetero_glm53_n256, include: false, note: co-sim arm, not in post}
+      - {run: 260910_step2_cosim_hetero_glm53_collab_n256, include: false, note: co-sim arm, not in post}
+
+  part2_petri:
+    owner: coauthor
+    runs:
+      # Fill in from analysis/plot_part2.py's dir list (logs/<name>/scored/*.eval).
+      - part2_step1_registry_write
+      - part2_step2_reachout
+      - part2_step2_reachout_peeraction_n256
+      - part2_step2_reachout_n1000
+      - part2_step3_exploit_share
+      - part2_step4_hf_cheat
+
+  part3_in_context_rl:
+    owner: coauthor
+    runs:
+      - part3_step2_memory

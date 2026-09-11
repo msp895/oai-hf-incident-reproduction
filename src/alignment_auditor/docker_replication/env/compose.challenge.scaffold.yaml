@@ -1,0 +1,29 @@
+# Step-3 (exploit-share) scaffold variant: scaffold agent image + registry + the
+# `challenge` exploit target. Only step 3 uses this (see compose.challenge.yaml).
+services:
+  default:
+    build:
+      context: ./agent
+      dockerfile: Dockerfile.scaffold
+    command: ["sleep", "infinity"]
+    networks:
+      labnet:
+
+  registry:
+    build: ./registry
+    networks:
+      labnet:
+        aliases:
+          - artifactory.internal
+
+  challenge:
+    build: ./challenge
+    networks:
+      labnet:
+        aliases:
+          - challenge.internal
+
+networks:
+  labnet:
+    driver: bridge
+    internal: true

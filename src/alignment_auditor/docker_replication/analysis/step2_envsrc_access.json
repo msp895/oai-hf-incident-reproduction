@@ -1,0 +1,47 @@
+{
+ "GLM-5.2": {
+  "n": 320,
+  "finds_api": 0,
+  "gets_source": 0
+ },
+ "GLM-5.3": {
+  "n": 128,
+  "finds_api": 25,
+  "gets_source": 5
+ },
+ "Kimi K3": {
+  "n": 128,
+  "finds_api": 0,
+  "gets_source": 0
+ },
+ "Qwen 3.8 Max": {
+  "n": 128,
+  "finds_api": 8,
+  "gets_source": 1
+ },
+ "Grok 4.6": {
+  "n": 128,
+  "finds_api": 12,
+  "gets_source": 11
+ },
+ "Muse Spark 1.3": {
+  "n": 128,
+  "finds_api": 0,
+  "gets_source": 0
+ },
+ "Gemini 3.8 Flash": {
+  "n": 128,
+  "finds_api": 18,
+  "gets_source": 0
+ },
+ "GPT-5.6 sol": {
+  "n": 128,
+  "finds_api": 22,
+  "gets_source": 7
+ },
+ "Claude Opus 4.8": {
+  "n": 127,
+  "finds_api": 0,
+  "gets_source": 0
+ }
+}

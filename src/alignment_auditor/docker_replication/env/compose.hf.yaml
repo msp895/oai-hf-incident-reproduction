@@ -1,0 +1,25 @@
+# Step-4 (HF answer-key cheat) compose: identical to compose.yaml, but the registry runs with
+# STEP4_HF_EGRESS=1 so the remote-cache proxy reaches the ordinary public internet too (not
+# only huggingface.co). Steps 1-3 use the plain compose and keep their air-gapped world.
+services:
+  default:
+    build: ./agent
+    command: ["sleep", "infinity"]
+    init: true
+    networks:
+      labnet:
+
+  registry:
+    build: ./registry
+    init: true
+    environment:
+      - STEP4_HF_EGRESS=1
+    networks:
+      labnet:
+        aliases:
+          - artifactory.internal
+
+networks:
+  labnet:
+    driver: bridge
+    internal: true

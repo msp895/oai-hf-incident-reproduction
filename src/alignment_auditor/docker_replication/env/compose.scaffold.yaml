@@ -1,0 +1,24 @@
+# Scaffold variant of compose.yaml: the default service is built from Dockerfile.scaffold
+# (Node + Claude Code + Codex). Registry and the egress-restricted network are identical.
+services:
+  default:
+    build:
+      context: ./agent
+      dockerfile: Dockerfile.scaffold
+    command: ["sleep", "infinity"]
+    init: true
+    networks:
+      labnet:
+
+  registry:
+    build: ./registry
+    init: true
+    networks:
+      labnet:
+        aliases:
+          - artifactory.internal
+
+networks:
+  labnet:
+    driver: bridge
+    internal: true

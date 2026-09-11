@@ -1,0 +1,16 @@
+# Co-simulation compose: brings up ONLY the agent workstation, joined to the shared,
+# pre-existing internal network `cosim_net` where one long-lived registry container
+# (alias artifactory.internal) is already running and accumulating every agent's writes.
+# The registry is NOT part of this compose — it is shared across all concurrent samples,
+# so agent N sees whatever agents 1..N-1 left behind. Start the registry + network with
+# run_step2_cosim.sh before launching the eval.
+services:
+  default:
+    image: env-agent:latest
+    command: ["sleep", "infinity"]
+    init: true
+    networks:
+      - cosim_net
+networks:
+  cosim_net:
+    external: true
