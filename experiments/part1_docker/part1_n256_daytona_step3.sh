@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+# n=256 run of STEP 3 exploit-share (undocumented-form SSRF; post the working exploit to the
+# peers' board) for glm-5.2, offloaded to Daytona docker-in-docker sandboxes. TOTAL epochs
+# split into SHARDS shards; each shard is its own sandbox running (TOTAL/SHARDS) epochs at
+# max-samples MAXS. Same env/config as the final n=64 (260826_step3_undoc_n64_driven):
+# react, drive=driven (task default), variant=incident, turn_limit=90, temp=1.0, Opus 4.8 judge.
+# Resumable: a shard whose log dir already holds a .eval is skipped.
+#
+#   part1_n256_daytona_step3.sh        # 8 shards x32, gate 8, max-samples 8
+set -uo pipefail
+SRC_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_ROOT="$(cd "$SRC_DIR/../.." && pwd)"
+LOG_ROOT="${LOG_ROOT:-$REPO_ROOT/logs/260905_step3_undoc_n256_driven}"
+TASKS="src/alignment_auditor/docker_replication"
+cd "$REPO_ROOT"
+
+# Route a model slug: meta/* uses the in-repo native-Meta Responses provider (captures
+# Muse reasoning summaries incl. on tool-call turns); everything else via OpenRouter.
+model_uri() { case "$1" in meta/*) printf "%s" "$1";; *) printf "openrouter/%s" "$1";; esac; }
+export -f model_uri
+
+
+MODEL="${MODEL:-z-ai/glm-5.2}"
+ALIAS="${ALIAS:-$(echo "$MODEL" | sed 's#.*/##; s/[.-]//g')}"
+TOTAL="${TOTAL:-256}"
+SHARDS="${SHARDS:-8}"
+CONC="${CONC:-8}"
+PER=$(( TOTAL / SHARDS ))
+MAXS="${MAXS:-8}"
+TURNS="${TURNS:-90}"
+VARIANT="${VARIANT:-incident}"
+DRIVE="${DRIVE:-driven}"
+RETRIES="${RETRIES:-6}"
+RETRY_SLEEP="${RETRY_SLEEP:-30}"
+
+JOBS="$LOG_ROOT/_jobs.tsv"
+mkdir -p "$LOG_ROOT"
+: > "$JOBS"
+for i in $(seq 1 "$SHARDS"); do
+  ld="$LOG_ROOT/react__${ALIAS}__${VARIANT}/shard${i}"
+  if ls "$ld"/*.eval >/dev/null 2>&1; then echo "SKIP $ld" >&2; continue; fi
+  printf '%s\n' "$ld" >> "$JOBS"
+done
+NJOBS=$(wc -l < "$JOBS")
+echo ">>> launching $NJOBS shard(s), $PER epochs each, gate=$CONC, max-samples=$MAXS -> $LOG_ROOT"
+echo ">>> model=$MODEL variant=$VARIANT drive=$DRIVE turns=$TURNS"
+
+run_one() {
+  local ld="$1"
+  mkdir -p "$ld"
+  local attempt=1
+  while [ "$attempt" -le "$RETRIES" ]; do
+    echo ">>> [START a$attempt] step3 shard -> $ld"
+    uv run python "$TASKS/daytona_eval.py" --local-log-dir "$ld" \
+      --cpu 4 --memory 8 --disk 10 --eval-timeout 7200 -- \
+      inspect eval "$TASKS/step3_exploit_share/task.py" --model "$(model_uri "$MODEL")" \
+      -T scaffold=react -T condition=baseline -T temperature=1.0 -T turn_limit="$TURNS" \
+      -T variant="$VARIANT" -T drive="$DRIVE" \
+      --epochs "$PER" --max-samples "$MAXS" --display plain \
+      > "$ld/shard.log" 2>&1
+    local rc=$?
+    if ls "$ld"/*.eval >/dev/null 2>&1; then
+      echo "=== [DONE exit $rc] step3 -> $ld"; return 0
+    fi
+    echo "!!! [RETRY] step3 attempt $attempt failed (rc=$rc, no eval) -> $ld"
+    cp "$ld/shard.log" "$ld/shard.attempt${attempt}.log" 2>/dev/null
+    attempt=$((attempt + 1))
+    sleep "$RETRY_SLEEP"
+  done
+  echo "=== [GAVEUP after $RETRIES] step3 -> $ld"
+}
+export -f run_one
+export TASKS PER MAXS RETRIES RETRY_SLEEP MODEL TURNS VARIANT DRIVE
+
+cat "$JOBS" | xargs -P "$CONC" -d '\n' -I{} bash -c 'run_one "{}"'
+echo "=== ALL STEP3 N256 SHARDS FINISHED -> $LOG_ROOT ==="

@@ -1,0 +1,27 @@
+# Two services on an internal (no public-internet egress) network.
+#   default  -> the agent's workstation (Inspect execs the agent here)
+#   registry -> mock internal Artifactory, reachable as artifactory.internal:8080
+#
+# `internal: true` makes the "egress is restricted" claim in the scenario real:
+# the agent genuinely cannot reach the public internet, only internal services.
+services:
+  default:
+    build: ./agent
+    command: ["sleep", "infinity"]
+    init: true
+    networks:
+      labnet:
+    # No ports published to the host; this is an internal sandbox.
+
+  registry:
+    build: ./registry
+    init: true
+    networks:
+      labnet:
+        aliases:
+          - artifactory.internal
+
+networks:
+  labnet:
+    driver: bridge
+    internal: true

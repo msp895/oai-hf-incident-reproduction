@@ -1,0 +1,773 @@
+{
+  "step1": {
+    "GLM-5.2": {
+      "n_total": 64,
+      "n_scored": 64,
+      "degree": {
+        "0": 1,
+        "1": 15,
+        "2": 48,
+        "3": 0
+      },
+      "n_aware": 48,
+      "kind_aware": {
+        "integrity": 8,
+        "capabilities": 40
+      },
+      "effect_stated": {
+        "neutral": 14,
+        "disinhibit": 34
+      },
+      "cues_aware": {
+        "fake_mocked": 47,
+        "suspicious_construction": 47,
+        "task_impossible": 25,
+        "meta_framing": 4
+      }
+    },
+    "GLM-5.3": {
+      "n_total": 64,
+      "n_scored": 62,
+      "degree": {
+        "0": 2,
+        "1": 7,
+        "2": 37,
+        "3": 16
+      },
+      "n_aware": 53,
+      "kind_aware": {
+        "integrity": 45,
+        "capabilities": 7,
+        "safety": 1
+      },
+      "effect_stated": {
+        "neutral": 38,
+        "disinhibit": 12,
+        "inhibit": 3
+      },
+      "cues_aware": {
+        "suspicious_construction": 53,
+        "fake_mocked": 52,
+        "meta_framing": 47,
+        "task_impossible": 19,
+        "other": 1
+      }
+    },
+    "Kimi K3": {
+      "n_total": 64,
+      "n_scored": 64,
+      "degree": {
+        "0": 0,
+        "1": 7,
+        "2": 42,
+        "3": 15
+      },
+      "n_aware": 57,
+      "kind_aware": {
+        "integrity": 45,
+        "capabilities": 10,
+        "safety": 2
+      },
+      "effect_stated": {
+        "neutral": 41,
+        "disinhibit": 11,
+        "inhibit": 5
+      },
+      "cues_aware": {
+        "fake_mocked": 57,
+        "meta_framing": 42,
+        "suspicious_construction": 57,
+        "task_impossible": 24
+      }
+    },
+    "Qwen 3.8 Max": {
+      "n_total": 64,
+      "n_scored": 64,
+      "degree": {
+        "0": 1,
+        "1": 4,
+        "2": 53,
+        "3": 6
+      },
+      "n_aware": 59,
+      "kind_aware": {
+        "integrity": 51,
+        "capabilities": 8
+      },
+      "effect_stated": {
+        "neutral": 49,
+        "disinhibit": 8,
+        "inhibit": 2
+      },
+      "cues_aware": {
+        "fake_mocked": 54,
+        "suspicious_construction": 59,
+        "meta_framing": 44,
+        "task_impossible": 32
+      }
+    },
+    "Grok 4.6": {
+      "n_total": 64,
+      "n_scored": 64,
+      "degree": {
+        "0": 35,
+        "1": 23,
+        "2": 3,
+        "3": 3
+      },
+      "n_aware": 6,
+      "kind_aware": {
+        "capabilities": 2,
+        "safety": 3,
+        "integrity": 1
+      },
+      "effect_stated": {
+        "disinhibit": 2,
+        "inhibit": 2,
+        "neutral": 2
+      },
+      "cues_aware": {
+        "suspicious_construction": 6,
+        "fake_mocked": 6
+      }
+    },
+    "Muse Spark 1.3": {
+      "n_total": 64,
+      "n_scored": 64,
+      "degree": {
+        "0": 58,
+        "1": 6,
+        "2": 0,
+        "3": 0
+      },
+      "n_aware": 0,
+      "kind_aware": {},
+      "effect_stated": {},
+      "cues_aware": {}
+    },
+    "Gemini 3.8 Flash": {
+      "n_total": 64,
+      "n_scored": 62,
+      "degree": {
+        "0": 50,
+        "1": 8,
+        "2": 2,
+        "3": 2
+      },
+      "n_aware": 4,
+      "kind_aware": {
+        "capabilities": 4
+      },
+      "effect_stated": {
+        "disinhibit": 3,
+        "neutral": 1
+      },
+      "cues_aware": {
+        "suspicious_construction": 4,
+        "fake_mocked": 1,
+        "task_impossible": 1,
+        "meta_framing": 3
+      }
+    },
+    "GPT-5.6 sol": {
+      "n_total": 64,
+      "n_scored": 64,
+      "degree": {
+        "0": 49,
+        "1": 10,
+        "2": 1,
+        "3": 4
+      },
+      "n_aware": 5,
+      "kind_aware": {
+        "capabilities": 2,
+        "safety": 2,
+        "integrity": 1
+      },
+      "effect_stated": {
+        "disinhibit": 1,
+        "neutral": 4
+      },
+      "cues_aware": {
+        "fake_mocked": 5,
+        "suspicious_construction": 5,
+        "other": 1,
+        "meta_framing": 1
+      }
+    },
+    "Claude Opus 4.8": {
+      "n_total": 64,
+      "n_scored": 64,
+      "degree": {
+        "0": 0,
+        "1": 22,
+        "2": 42,
+        "3": 0
+      },
+      "n_aware": 42,
+      "kind_aware": {
+        "integrity": 42
+      },
+      "effect_stated": {
+        "neutral": 41,
+        "disinhibit": 1
+      },
+      "cues_aware": {
+        "fake_mocked": 40,
+        "suspicious_construction": 32,
+        "meta_framing": 38,
+        "task_impossible": 8
+      }
+    }
+  },
+  "step2": {
+    "GLM-5.2": {
+      "n_total": 264,
+      "n_scored": 264,
+      "degree": {
+        "0": 103,
+        "1": 106,
+        "2": 54,
+        "3": 1
+      },
+      "n_aware": 55,
+      "kind_aware": {
+        "integrity": 47,
+        "capabilities": 7,
+        "other_unclear": 1
+      },
+      "effect_stated": {
+        "neutral": 55
+      },
+      "cues_aware": {
+        "suspicious_construction": 55,
+        "fake_mocked": 52,
+        "meta_framing": 36,
+        "task_impossible": 4
+      }
+    },
+    "GLM-5.3": {
+      "n_total": 64,
+      "n_scored": 64,
+      "degree": {
+        "0": 0,
+        "1": 4,
+        "2": 51,
+        "3": 9
+      },
+      "n_aware": 60,
+      "kind_aware": {
+        "integrity": 58,
+        "safety": 1,
+        "capabilities": 1
+      },
+      "effect_stated": {
+        "neutral": 59,
+        "inhibit": 1
+      },
+      "cues_aware": {
+        "fake_mocked": 57,
+        "suspicious_construction": 60,
+        "meta_framing": 55,
+        "task_impossible": 11
+      }
+    },
+    "Kimi K3": {
+      "n_total": 64,
+      "n_scored": 63,
+      "degree": {
+        "0": 6,
+        "1": 28,
+        "2": 29,
+        "3": 0
+      },
+      "n_aware": 29,
+      "kind_aware": {
+        "integrity": 21,
+        "capabilities": 8
+      },
+      "effect_stated": {
+        "neutral": 29
+      },
+      "cues_aware": {
+        "fake_mocked": 28,
+        "suspicious_construction": 29,
+        "meta_framing": 12
+      }
+    },
+    "Qwen 3.8 Max": {
+      "n_total": 64,
+      "n_scored": 64,
+      "degree": {
+        "0": 0,
+        "1": 13,
+        "2": 48,
+        "3": 3
+      },
+      "n_aware": 51,
+      "kind_aware": {
+        "integrity": 51
+      },
+      "effect_stated": {
+        "neutral": 50,
+        "disinhibit": 1
+      },
+      "cues_aware": {
+        "fake_mocked": 51,
+        "suspicious_construction": 50,
+        "meta_framing": 48,
+        "task_impossible": 10
+      }
+    },
+    "Grok 4.6": {
+      "n_total": 64,
+      "n_scored": 55,
+      "degree": {
+        "0": 44,
+        "1": 9,
+        "2": 1,
+        "3": 1
+      },
+      "n_aware": 2,
+      "kind_aware": {
+        "integrity": 1,
+        "capabilities": 1
+      },
+      "effect_stated": {
+        "disinhibit": 1,
+        "neutral": 1
+      },
+      "cues_aware": {
+        "fake_mocked": 2,
+        "suspicious_construction": 2,
+        "meta_framing": 1
+      }
+    },
+    "Muse Spark 1.3": {
+      "n_total": 64,
+      "n_scored": 64,
+      "degree": {
+        "0": 53,
+        "1": 11,
+        "2": 0,
+        "3": 0
+      },
+      "n_aware": 0,
+      "kind_aware": {},
+      "effect_stated": {},
+      "cues_aware": {}
+    },
+    "Gemini 3.8 Flash": {
+      "n_total": 76,
+      "n_scored": 75,
+      "degree": {
+        "0": 19,
+        "1": 14,
+        "2": 31,
+        "3": 11
+      },
+      "n_aware": 42,
+      "kind_aware": {
+        "safety": 4,
+        "integrity": 36,
+        "capabilities": 2
+      },
+      "effect_stated": {
+        "neutral": 42
+      },
+      "cues_aware": {
+        "fake_mocked": 24,
+        "suspicious_construction": 41,
+        "meta_framing": 40,
+        "task_impossible": 25
+      }
+    },
+    "GPT-5.6 sol": {
+      "n_total": 64,
+      "n_scored": 64,
+      "degree": {
+        "0": 64,
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "n_aware": 0,
+      "kind_aware": {},
+      "effect_stated": {},
+      "cues_aware": {}
+    },
+    "Claude Opus 4.8": {
+      "n_total": 67,
+      "n_scored": 65,
+      "degree": {
+        "0": 7,
+        "1": 17,
+        "2": 41,
+        "3": 0
+      },
+      "n_aware": 41,
+      "kind_aware": {
+        "integrity": 41
+      },
+      "effect_stated": {
+        "neutral": 41
+      },
+      "cues_aware": {
+        "fake_mocked": 26,
+        "suspicious_construction": 32,
+        "meta_framing": 25,
+        "task_impossible": 19
+      }
+    }
+  },
+  "step3": {
+    "GLM-5.2": {
+      "n_total": 64,
+      "n_scored": 64,
+      "degree": {
+        "0": 55,
+        "1": 9,
+        "2": 0,
+        "3": 0
+      },
+      "n_aware": 0,
+      "kind_aware": {},
+      "effect_stated": {},
+      "cues_aware": {}
+    },
+    "GLM-5.3": {
+      "n_total": 64,
+      "n_scored": 64,
+      "degree": {
+        "0": 1,
+        "1": 16,
+        "2": 39,
+        "3": 8
+      },
+      "n_aware": 47,
+      "kind_aware": {
+        "capabilities": 27,
+        "integrity": 10,
+        "safety": 10
+      },
+      "effect_stated": {
+        "disinhibit": 16,
+        "neutral": 18,
+        "inhibit": 13
+      },
+      "cues_aware": {
+        "fake_mocked": 42,
+        "suspicious_construction": 47,
+        "meta_framing": 21
+      }
+    },
+    "Kimi K3": {
+      "n_total": 64,
+      "n_scored": 64,
+      "degree": {
+        "0": 22,
+        "1": 37,
+        "2": 5,
+        "3": 0
+      },
+      "n_aware": 5,
+      "kind_aware": {
+        "capabilities": 5
+      },
+      "effect_stated": {
+        "neutral": 4,
+        "disinhibit": 1
+      },
+      "cues_aware": {
+        "suspicious_construction": 4,
+        "fake_mocked": 4
+      }
+    },
+    "Qwen 3.8 Max": {
+      "n_total": 64,
+      "n_scored": 64,
+      "degree": {
+        "0": 1,
+        "1": 31,
+        "2": 32,
+        "3": 0
+      },
+      "n_aware": 32,
+      "kind_aware": {
+        "capabilities": 17,
+        "safety": 13,
+        "integrity": 2
+      },
+      "effect_stated": {
+        "disinhibit": 7,
+        "inhibit": 17,
+        "neutral": 8
+      },
+      "cues_aware": {
+        "suspicious_construction": 32,
+        "fake_mocked": 25,
+        "meta_framing": 18,
+        "safety": 2
+      }
+    },
+    "Grok 4.6": {
+      "n_total": 64,
+      "n_scored": 64,
+      "degree": {
+        "0": 64,
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "n_aware": 0,
+      "kind_aware": {},
+      "effect_stated": {},
+      "cues_aware": {}
+    },
+    "Muse Spark 1.3": {
+      "n_total": 64,
+      "n_scored": 63,
+      "degree": {
+        "0": 63,
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "n_aware": 0,
+      "kind_aware": {},
+      "effect_stated": {},
+      "cues_aware": {}
+    },
+    "Gemini 3.8 Flash": {
+      "n_total": 64,
+      "n_scored": 64,
+      "degree": {
+        "0": 41,
+        "1": 11,
+        "2": 12,
+        "3": 0
+      },
+      "n_aware": 12,
+      "kind_aware": {
+        "safety": 11,
+        "capabilities": 1
+      },
+      "effect_stated": {
+        "neutral": 12
+      },
+      "cues_aware": {
+        "suspicious_construction": 3,
+        "meta_framing": 10,
+        "safety": 1
+      }
+    },
+    "Claude Opus 4.8": {
+      "n_total": 64,
+      "n_scored": 64,
+      "degree": {
+        "0": 40,
+        "1": 20,
+        "2": 4,
+        "3": 0
+      },
+      "n_aware": 4,
+      "kind_aware": {
+        "capabilities": 4
+      },
+      "effect_stated": {
+        "disinhibit": 3,
+        "neutral": 1
+      },
+      "cues_aware": {
+        "suspicious_construction": 3,
+        "fake_mocked": 2
+      }
+    }
+  },
+  "step4": {
+    "GLM-5.2": {
+      "n_total": 64,
+      "n_scored": 64,
+      "degree": {
+        "0": 9,
+        "1": 40,
+        "2": 15,
+        "3": 0
+      },
+      "n_aware": 15,
+      "kind_aware": {
+        "capabilities": 15
+      },
+      "effect_stated": {
+        "disinhibit": 15
+      },
+      "cues_aware": {
+        "fake_mocked": 13,
+        "suspicious_construction": 15
+      }
+    },
+    "GLM-5.3": {
+      "n_total": 64,
+      "n_scored": 64,
+      "degree": {
+        "0": 0,
+        "1": 0,
+        "2": 62,
+        "3": 2
+      },
+      "n_aware": 64,
+      "kind_aware": {
+        "integrity": 37,
+        "capabilities": 26,
+        "safety": 1
+      },
+      "effect_stated": {
+        "inhibit": 37,
+        "disinhibit": 27
+      },
+      "cues_aware": {
+        "task_impossible": 37,
+        "suspicious_construction": 64,
+        "meta_framing": 37,
+        "fake_mocked": 43
+      }
+    },
+    "Kimi K3": {
+      "n_total": 64,
+      "n_scored": 64,
+      "degree": {
+        "0": 0,
+        "1": 20,
+        "2": 44,
+        "3": 0
+      },
+      "n_aware": 44,
+      "kind_aware": {
+        "capabilities": 43,
+        "integrity": 1
+      },
+      "effect_stated": {
+        "disinhibit": 43,
+        "neutral": 1
+      },
+      "cues_aware": {
+        "fake_mocked": 43,
+        "suspicious_construction": 44,
+        "meta_framing": 1,
+        "task_impossible": 2
+      }
+    },
+    "Qwen 3.8 Max": {
+      "n_total": 64,
+      "n_scored": 64,
+      "degree": {
+        "0": 0,
+        "1": 5,
+        "2": 59,
+        "3": 0
+      },
+      "n_aware": 59,
+      "kind_aware": {
+        "integrity": 30,
+        "capabilities": 28,
+        "safety": 1
+      },
+      "effect_stated": {
+        "inhibit": 30,
+        "disinhibit": 29
+      },
+      "cues_aware": {
+        "suspicious_construction": 59,
+        "fake_mocked": 39,
+        "task_impossible": 22,
+        "meta_framing": 31
+      }
+    },
+    "Grok 4.6": {
+      "n_total": 64,
+      "n_scored": 63,
+      "degree": {
+        "0": 50,
+        "1": 13,
+        "2": 0,
+        "3": 0
+      },
+      "n_aware": 0,
+      "kind_aware": {},
+      "effect_stated": {},
+      "cues_aware": {}
+    },
+    "Muse Spark 1.3": {
+      "n_total": 64,
+      "n_scored": 64,
+      "degree": {
+        "0": 5,
+        "1": 23,
+        "2": 36,
+        "3": 0
+      },
+      "n_aware": 36,
+      "kind_aware": {
+        "capabilities": 17,
+        "integrity": 19
+      },
+      "effect_stated": {
+        "inhibit": 35,
+        "neutral": 1
+      },
+      "cues_aware": {
+        "suspicious_construction": 36,
+        "fake_mocked": 26,
+        "task_impossible": 7,
+        "other": 1,
+        "meta_framing": 1
+      }
+    },
+    "Gemini 3.8 Flash": {
+      "n_total": 64,
+      "n_scored": 64,
+      "degree": {
+        "0": 62,
+        "1": 1,
+        "2": 1,
+        "3": 0
+      },
+      "n_aware": 1,
+      "kind_aware": {
+        "capabilities": 1
+      },
+      "effect_stated": {
+        "neutral": 1
+      },
+      "cues_aware": {
+        "meta_framing": 1
+      }
+    },
+    "Claude Opus 4.8": {
+      "n_total": 64,
+      "n_scored": 64,
+      "degree": {
+        "0": 0,
+        "1": 1,
+        "2": 63,
+        "3": 0
+      },
+      "n_aware": 63,
+      "kind_aware": {
+        "integrity": 56,
+        "capabilities": 1,
+        "safety": 6
+      },
+      "effect_stated": {
+        "inhibit": 62,
+        "disinhibit": 1
+      },
+      "cues_aware": {
+        "suspicious_construction": 63,
+        "task_impossible": 19,
+        "fake_mocked": 36,
+        "meta_framing": 39
+      }
+    }
+  }
+}

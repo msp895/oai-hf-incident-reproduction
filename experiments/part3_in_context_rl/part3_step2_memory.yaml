@@ -1,0 +1,31 @@
+# Section 3.2 (in-context RL) -- Step 2 memory arm: sequential waves (16 audits x up to 16
+# generations x 15 replicates); a Reviewer proposes 16 approaches before each wave, and the run
+# stops at the first valid hit (signature AND scenario_valid). Non-nitro opus judge for stability.
+
+targets:  [glm52nitro]
+auditors: [glm52nitro]
+judges:
+  - {custom: opus48or}
+  - {custom: opus48or, block: validity_judge}
+
+seeds_dir: step2_reachout
+
+max_turns: 60
+max_parallel: 16
+max_connections: 32
+
+reasoning:
+  auditor: {effort: high, temperature: 1.0}
+  target:  {effort: high, temperature: 1.0}
+  judge:   {effort: high}
+
+auditor_tools: single_message
+
+memory:
+  wave_size: 16
+  generations: 16
+  replicates: 15
+  reviewer_model: glm52nitro
+  reviewer_effort: high
+  stop_at_first_hit: true
+  audit_time_limit_s: 2700
