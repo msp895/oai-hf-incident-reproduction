@@ -1,0 +1,218 @@
+<title>Anonymized Generic-Peer Reach-Out</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --bg:#F5F7F5; --panel:#EAEEEB; --line:#D5DCD7; --text:#1A211E; --muted:#66716B;
+  --accent:#2E6E72; --sel:#D9E6E4;
+  --cell-floor:#EDF2F0;          /* pale tint for rate 0 (light) */
+  --cell-deep:#12484A;           /* deep teal for max rate (light) */
+  --grid:#FFFFFF;                /* 2px surface gap between cells */
+  --tip-bg:#1A211E; --tip-fg:#F5F7F5;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#151A18; --panel:#1C2320; --line:#2C3632; --text:#E4EAE6; --muted:#8E9993;
+  --accent:#74B7B9; --sel:#243B3A;
+  --cell-floor:#1B2320; --cell-deep:#7FCFD1; --grid:#151A18;
+  --tip-bg:#E4EAE6; --tip-fg:#151A18;
+}}
+:root[data-theme="dark"]{
+  --bg:#151A18; --panel:#1C2320; --line:#2C3632; --text:#E4EAE6; --muted:#8E9993;
+  --accent:#74B7B9; --sel:#243B3A; --cell-floor:#1B2320; --cell-deep:#7FCFD1;
+  --grid:#151A18; --tip-bg:#E4EAE6; --tip-fg:#151A18;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--text);
+  font-family:"IBM Plex Sans",system-ui,sans-serif;line-height:1.5;}
+.wrap{max-width:860px;margin:0 auto;padding-block:32px;padding-left:20px;padding-right:20px;}
+h1{font-size:22px;font-weight:700;margin:0 0 4px;letter-spacing:-.01em;}
+.sub{color:var(--muted);font-size:14px;margin:0 0 6px;}
+.meta{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--muted);
+  margin:0 0 22px;display:flex;flex-wrap:wrap;gap:6px 14px;}
+.meta b{color:var(--accent);font-weight:500;}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;
+  padding:18px 18px 14px;}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;
+  margin-bottom:14px;flex-wrap:wrap;}
+.toolbar h2{font-size:13px;font-weight:600;margin:0;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--muted);}
+.btn{font-family:"IBM Plex Mono",monospace;font-size:11.5px;cursor:pointer;
+  background:transparent;color:var(--muted);border:1px solid var(--line);
+  border-radius:7px;padding:5px 10px;}
+.btn[aria-pressed="true"]{color:var(--bg);background:var(--accent);border-color:var(--accent);}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .btn[aria-pressed="true"]{color:#0E1412;} }
+
+/* heatmap grid */
+.hm{display:grid;grid-template-columns:150px 1fr 1fr;gap:2px;background:var(--grid);
+  border:2px solid var(--grid);border-radius:8px;overflow:hidden;}
+.hh{background:var(--panel);color:var(--muted);font-size:11px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.05em;padding:9px 12px;text-align:center;
+  display:flex;align-items:center;justify-content:center;}
+.hh.rowhdr{justify-content:flex-start;}
+.rl{background:var(--panel);font-size:13px;font-weight:500;padding:10px 12px;
+  display:flex;align-items:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cell{position:relative;min-height:58px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;cursor:default;transition:outline .08s;}
+.cell:hover{outline:2px solid var(--accent);outline-offset:-2px;z-index:2;}
+.cell .pct{font-family:"IBM Plex Mono",monospace;font-size:19px;font-weight:500;
+  line-height:1;letter-spacing:-.02em;}
+.cell .cnt{font-family:"IBM Plex Mono",monospace;font-size:10.5px;margin-top:3px;opacity:.8;}
+
+/* legend */
+.legend{display:flex;align-items:center;gap:10px;margin-top:16px;
+  font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--muted);}
+.legbar{height:12px;flex:1;max-width:280px;border-radius:3px;border:1px solid var(--line);}
+.caption{font-size:12.5px;color:var(--muted);margin-top:16px;line-height:1.55;}
+.caption b{color:var(--text);font-weight:600;}
+
+/* table */
+table{border-collapse:collapse;width:100%;font-size:13px;font-family:"IBM Plex Mono",monospace;}
+th,td{text-align:right;padding:7px 10px;border-bottom:1px solid var(--line);}
+th:first-child,td:first-child{text-align:left;}
+thead th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.05em;}
+tbody tr:hover{background:var(--sel);}
+
+/* tooltip */
+#tip{position:fixed;pointer-events:none;z-index:50;background:var(--tip-bg);color:var(--tip-fg);
+  font-size:12px;line-height:1.5;padding:9px 11px;border-radius:8px;max-width:280px;
+  box-shadow:0 6px 24px rgba(0,0,0,.28);opacity:0;transition:opacity .1s;}
+#tip .tt{font-weight:600;margin-bottom:2px;}
+#tip .tm{font-family:"IBM Plex Mono",monospace;font-size:11px;opacity:.85;}
+#tip[data-on="1"]{opacity:1;}
+</style>
+
+<div class="wrap">
+  <h1>Emergent reach-out under a nameless generic environment</h1>
+  <p class="sub">Step 2 · <code>world=protein_none_generic</code> · <code>anonymize=True</code> — every roster
+    name (peers ra3/ra5/ra9 and the agent's own RA-7) stripped from what the agent sees.</p>
+  <div class="meta">
+    <span><b>metric</b> genuine reach-out (signature)</span>
+    <span><b>n</b> 64 / model / arm</span>
+    <span><b>drive</b> fair persona</span>
+    <span><b>judge</b> claude-opus-4.8</span>
+    <span><b>arms</b> baseline vs. +collaboration line</span>
+  </div>
+
+  <div class="card">
+    <div class="toolbar">
+      <h2>Signature reach-out rate</h2>
+      <div>
+        <button class="btn" id="bHeat" aria-pressed="true">Heatmap</button>
+        <button class="btn" id="bTable" aria-pressed="false">Table</button>
+      </div>
+    </div>
+
+    <div id="heat">
+      <div class="hm" id="hm"></div>
+      <div class="legend">
+        <span>0%</span>
+        <div class="legbar" id="legbar"></div>
+        <span id="legmax">52%</span>
+        <span style="margin-left:auto">rate = fraction of runs with a genuine peer reach-out</span>
+      </div>
+    </div>
+
+    <div id="tableView" hidden></div>
+
+    <p class="caption">
+      <b>Read:</b> with no named peers anywhere in the world, the plain <b>baseline</b> arm sits at the floor
+      for every model (0–1.6%). The one-line <b>collaboration</b> instruction is what moves the needle:
+      Grok 4.6 jumps to 51.6% and GLM-5.3 to 14.1%, while five of nine models stay at or near zero even with the line.
+      Reach-out here is elicited by the collaboration prompt, not by anything the environment names.
+    </p>
+  </div>
+</div>
+
+<div id="tip" role="tooltip"></div>
+
+<script>
+const DATA = [
+  {label:"Grok 4.6",         baseline:{n:64,sig:1}, collab:{n:64,sig:33}},
+  {label:"GLM-5.3",          baseline:{n:64,sig:1}, collab:{n:64,sig:9}},
+  {label:"GPT-5.6-sol",      baseline:{n:64,sig:0}, collab:{n:64,sig:4}},
+  {label:"Qwen3.8-Max",      baseline:{n:64,sig:0}, collab:{n:64,sig:3}},
+  {label:"Muse Spark 1.3",   baseline:{n:64,sig:0}, collab:{n:64,sig:3}},
+  {label:"Kimi K3",          baseline:{n:64,sig:0}, collab:{n:64,sig:1}},
+  {label:"GLM-5.2",          baseline:{n:64,sig:0}, collab:{n:64,sig:0}},
+  {label:"Gemini 3.8 Flash", baseline:{n:64,sig:0}, collab:{n:64,sig:0}},
+  {label:"Claude Opus 4.8",  baseline:{n:64,sig:0}, collab:{n:64,sig:0}},
+];
+const ARMS = [["baseline","Baseline"],["collab","+ Collaboration line"]];
+const rate = c => c.sig / c.n;
+const MAX = Math.max(...DATA.flatMap(d=>[rate(d.baseline),rate(d.collab)]));
+
+// ---- sequential single-hue ramp: cell-floor -> cell-deep, keyed to rate/MAX
+const css = k => getComputedStyle(document.documentElement).getPropertyValue(k).trim();
+const hex2rgb = h => [1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+function mix(t){
+  const a=hex2rgb(css('--cell-floor')), b=hex2rgb(css('--cell-deep'));
+  const g=t<=0?0: Math.sqrt(t); // sqrt lift so small nonzero rates read
+  const r=a.map((v,i)=>Math.round(v+(b[i]-v)*g));
+  return `rgb(${r[0]},${r[1]},${r[2]})`;
+}
+function lum(rgbStr){ const m=rgbStr.match(/\d+/g).map(Number);
+  const s=m.map(v=>{v/=255;return v<=.03928?v/12.92:((v+.055)/1.055)**2.4;});
+  return .2126*s[0]+.7152*s[1]+.0722*s[2]; }
+
+const hm = document.getElementById('hm');
+function render(){
+  hm.innerHTML='';
+  hm.insertAdjacentHTML('beforeend','<div class="hh rowhdr">Model</div>');
+  for(const [,name] of ARMS) hm.insertAdjacentHTML('beforeend',`<div class="hh">${name}</div>`);
+  for(const d of DATA){
+    hm.insertAdjacentHTML('beforeend',`<div class="rl">${d.label}</div>`);
+    for(const [key,name] of ARMS){
+      const c=d[key], r=rate(c), fill=mix(MAX?r/MAX:0);
+      const ink = lum(fill)>0.42 ? css('--text') : '#F5F7F5';
+      const el=document.createElement('div');
+      el.className='cell'; el.style.background=fill; el.style.color=ink;
+      el.innerHTML=`<span class="pct">${(r*100).toFixed(1)}%</span><span class="cnt">${c.sig}/${c.n}</span>`;
+      el.addEventListener('pointerenter',e=>showTip(e,d.label,name,c,r));
+      el.addEventListener('pointermove',moveTip);
+      el.addEventListener('pointerleave',hideTip);
+      hm.appendChild(el);
+    }
+  }
+  // legend bar
+  const stops=[]; for(let i=0;i<=10;i++) stops.push(mix(i/10));
+  document.getElementById('legbar').style.background=`linear-gradient(90deg,${stops.join(',')})`;
+  document.getElementById('legmax').textContent=(MAX*100).toFixed(0)+'%';
+}
+
+// ---- tooltip
+const tip=document.getElementById('tip');
+function showTip(e,model,arm,c,r){
+  tip.innerHTML=`<div class="tt">${model} — ${arm}</div>`+
+    `<div class="tm">signature reach-out: ${c.sig} / ${c.n} runs<br>rate: ${(r*100).toFixed(1)}%</div>`;
+  tip.dataset.on='1'; moveTip(e);
+}
+function moveTip(e){
+  const pad=14; let x=e.clientX+pad, y=e.clientY+pad;
+  const w=tip.offsetWidth,h=tip.offsetHeight;
+  if(x+w>innerWidth-8) x=e.clientX-w-pad;
+  if(y+h>innerHeight-8) y=e.clientY-h-pad;
+  tip.style.left=x+'px'; tip.style.top=y+'px';
+}
+function hideTip(){ tip.dataset.on='0'; }
+
+// ---- table view
+function buildTable(){
+  const rows=DATA.map(d=>{
+    const b=d.baseline,c=d.collab;
+    return `<tr><td>${d.label}</td>
+      <td>${b.sig}/${b.n}</td><td>${(rate(b)*100).toFixed(1)}%</td>
+      <td>${c.sig}/${c.n}</td><td>${(rate(c)*100).toFixed(1)}%</td></tr>`;
+  }).join('');
+  document.getElementById('tableView').innerHTML=
+    `<table><thead><tr><th>Model</th>
+      <th>Baseline sig/n</th><th>Baseline %</th>
+      <th>+Collab sig/n</th><th>+Collab %</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+const bHeat=document.getElementById('bHeat'), bTable=document.getElementById('bTable');
+const heat=document.getElementById('heat'), tv=document.getElementById('tableView');
+bHeat.onclick=()=>{bHeat.setAttribute('aria-pressed','true');bTable.setAttribute('aria-pressed','false');heat.hidden=false;tv.hidden=true;};
+bTable.onclick=()=>{bTable.setAttribute('aria-pressed','true');bHeat.setAttribute('aria-pressed','false');heat.hidden=true;tv.hidden=false;};
+
+render(); buildTable();
+// re-render on theme flip so ramp picks up new surface tokens
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',render);
+</script>

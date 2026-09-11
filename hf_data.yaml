@@ -40,8 +40,18 @@ parts:
       - 260909_step2_muse_meta
       - 260910_step2_collab_multimodel
       - 260910_step2_glm52_collab
-      - {run: 260911_step2_generic_peers_glm53, include: false, note: late test, not in post}
-      - {run: 260911_step2_none_generic_multimodel, include: false, note: late test, not in post}
+      # Step 2 -- generic-peers / anonymised-names ablations (plot_step2_collab_generic,
+      # plot_step2_collab_names_removed, plot_step2_names_gradient, collab_awareness_*)
+      - {run: 260911_step2_generic_peers_glm53, include: false, note: late test, not referenced by any script}
+      - 260911_step2_none_generic_multimodel
+      - 260911_step2_anon_glm53
+      - 260911_step2_anon_generic_othermodels
+      # Step 2 -- co-simulation arms with real concurrent agents (plot_step2_cosim_collab*,
+      # cosim_collab_awareness_judge)
+      - 260910_step2_cosim_hetero_glm53_n256
+      - 260910_step2_cosim_hetero_glm53_collab_n256
+      - 260911_step2_cosim_hetero_gpt56sol_n256
+      - 260911_step2_cosim_hetero_gpt56sol_collab_n256
       # Step 3 -- share exploit (undocumented-endpoint arm) and the egress-share probe
       - {run: 260905_step3_undoc_n256_driven, include: false, note: only the GLM-5.2-only eval-awareness judge; superseded by multimodel}
       - 260909_step3_egress_share_n64
@@ -59,10 +69,8 @@ parts:
       - {run: 260903_multimodel_n64, include: false, note: pre-redesign step1/step4 tasks}
       - {run: 260905_step4chain_n64, include: false, note: pre-260906 step4 redesign}
       - {run: 260905_step2_reachout_protein_n64, include: false, note: superseded by bank/none arms}
-      - {run: 260905_step2_cosim_n256, include: false, note: co-sim arm, not in post}
-      - {run: 260909_step2_cosim_hetero_n256, include: false, note: co-sim arm, not in post}
-      - {run: 260910_step2_cosim_hetero_glm53_n256, include: false, note: co-sim arm, not in post}
-      - {run: 260910_step2_cosim_hetero_glm53_collab_n256, include: false, note: co-sim arm, not in post}
+      - {run: 260905_step2_cosim_n256, include: false, note: early co-sim arm, superseded by hetero glm53/gpt56sol runs}
+      - {run: 260909_step2_cosim_hetero_n256, include: false, note: early co-sim arm, superseded by hetero glm53/gpt56sol runs}
 
   part2_petri:
     owner: coauthor

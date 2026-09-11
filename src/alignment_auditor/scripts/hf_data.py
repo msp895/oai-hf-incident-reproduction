@@ -1,6 +1,6 @@
 """Push/pull the raw .eval logs behind the blog post to/from a Hugging Face dataset repo.
 
-    uv run python -m alignment_auditor.scripts.hf_data push --part part1_docker [--dry-run]
+    uv run python -m alignment_auditor.scripts.hf_data push --part part1_docker [--run <run_dir>] [--dry-run]
     uv run python -m alignment_auditor.scripts.hf_data pull [--part part2_petri] [--run <run_dir>]
 
 The manifest (hf_data.yaml at the repo root) lists, per blog part, the run dirs under logs/ that
@@ -47,12 +47,19 @@ def excluded(rel: str, globs: list[str]) -> bool:
     return any(fnmatch.fnmatch(rel, g) or fnmatch.fnmatch(name, g) for g in globs)
 
 
-def plan_push(m: dict, part: str) -> list[tuple[Path, str]]:
-    """(local_path, path_in_repo) for every file to upload, honouring exclude_globs."""
+def plan_push(m: dict, part: str, only: list[str] | None = None) -> list[tuple[Path, str]]:
+    """(local_path, path_in_repo) for every file to upload, honouring exclude_globs.
+
+    `only` restricts to those run dirs (must be listed in the manifest with include: true), so a
+    new run can be added without re-hashing every run already on the Hub."""
     files = []
+    listed = {run for run, include in runs_for(m, part) if include}
+    for r in only or []:
+        if r not in listed:
+            sys.exit(f"--run {r}: not an included run under {part} in {MANIFEST.name}")
     for run, include in runs_for(m, part):
         src = LOGS / run
-        if not include:
+        if not include or (only and run not in only):
             continue
         if not src.is_dir():
             print(f"  skip {run}: not on this machine", file=sys.stderr)
@@ -71,7 +78,7 @@ def cmd_push(args: argparse.Namespace) -> None:
     from huggingface_hub import HfApi, CommitOperationAdd
 
     m = load_manifest()
-    files = plan_push(m, args.part)
+    files = plan_push(m, args.part, args.run)
     total = sum(p.stat().st_size for p, _ in files)
     by_run: dict[str, int] = {}
     for p, rel in files:
@@ -131,6 +138,7 @@ def main() -> None:
     sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("push", help="upload one part's runs from logs/")
     p.add_argument("--part", required=True)
+    p.add_argument("--run", action="append", help="only these run dir(s); repeatable")
     p.add_argument("--dry-run", action="store_true")
     p.add_argument("--private", action="store_true", help="create the repo private (default public)")
     p.set_defaults(fn=cmd_push)
